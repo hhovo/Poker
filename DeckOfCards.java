@@ -2,7 +2,7 @@
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-public enum faces {
+enum faces {
     Deuce(2),
     Three(3),
     Four(4),
@@ -16,6 +16,11 @@ public enum faces {
     Queen(12),
     King(13),
     Ace(14);
+
+    int value;
+    faces(int value){
+        this.value = value;
+    }
 }
 
 public class DeckOfCards {
@@ -28,15 +33,16 @@ public class DeckOfCards {
     public DeckOfCards ()
     {
 
-        String[] faces  = { "Ace", "Deuce", "Three", "Four", "Five", "Six",
-                "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
+        /*String[] faces  = { "Ace", "Deuce", "Three", "Four", "Five", "Six",
+                "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };*/
+        //faces f;
         String[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
 
         deck = new Card[NUMBER_OF_CARDS];
         currentCard = 0;
 
         for ( int i = 0; i < NUMBER_OF_CARDS; i++ ){
-            deck[i] = new Card(faces[i % 13], suits[i / 13]);
+            deck[i] = new Card(faces.values()[i % 13], suits[i / 13]);
         }
     }
 

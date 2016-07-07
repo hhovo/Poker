@@ -1,15 +1,15 @@
 
 public class Card {
-    private final String face;
+    private final faces face;
     private final String suit;
-    
-    public Card (String cardFace, String cardSuit) {
+
+    public Card (faces cardFace, String cardSuit) {
         this.face = cardFace;
         this.suit = cardSuit;
     }
 
-    public String getFace(){
-        return face;
+    public Integer getFace(){
+        return face.value;
     }
 
     public String getSuit(){

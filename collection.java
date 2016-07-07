@@ -1,8 +1,3 @@
-/**
- * Created by hhovo on 6/30/2016.
- */
-
-
 
 public class collection {
 
@@ -40,15 +35,13 @@ public class collection {
         if(is_three_of_kind(cardList)){
             coll_type = collection_type.THREE_OF_KIND;
         }
-        /*if(is_straight(cardList)){
+        if(is_straight(cardList)){
             coll_type = collection_type.STRAIGHT;
-            return this;
         }
         if(is_flush(cardList)){
             coll_type = collection_type.FLUSH;
-            return this;
         }
-        if(is_full_house(cardList)){
+        /*if(is_full_house(cardList)){
             coll_type = collection_type.FULL_HOUSE;
             return this;
         }
@@ -87,7 +80,7 @@ public class collection {
         for(int i = 0; i < cardList.length - 1; i++){
             if( cardList[i].getFace() == cardList[i+1].getFace() ){
                 if (i+2 < cardList.length) {
-                    if (is_one_pair(cardList, i + 2, cardList.length)) {
+                    if (is_one_pair(cardList, i + 2, cardList.length)) { // also should add && is_four_of_kind
                         return true;
                     }
                 }
@@ -99,11 +92,40 @@ public class collection {
     public boolean is_three_of_kind(Card[] cardList){
         for(int i = 0; i < cardList.length - 2; i++){
             if(cardList[i].getFace() == cardList[i+1].getFace() && cardList[i].getFace() == cardList[i+2].getFace()){
+                for(int j = i + 2; j < cardList.length - 1; j++){
+                    if ( cardList[j].getFace() == cardList[j + 1].getFace() ){
+                        return false;
+                    }
+                }
                 return true;
+            }
+            else if(cardList[i].getFace() == cardList[i+1].getFace()){
+                return false;
             }
         }
         return false;
     }
+
+    public boolean is_straight(Card[] cardList){
+        for(int i = 0; i < cardList.length - 1; i++){
+            if( cardList[i+1].getFace() - cardList[i].getFace() != 1 ){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean is_flush(Card[] cardList){
+        for(int i = 0; i < cardList.length - 1; i++){
+            if( cardList[i].getSuit() != cardList[i+1].getSuit()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*public  boolean is_full_house(Card[] cardList){
+    }*/
 
 //    public void compare(coll_names p1, coll_names p2){
 //        if ( p1.value > p2.value ){

@@ -22,13 +22,13 @@ public class poker {
 
     public void startGame(){
         System.out.println("Dealing cards");
-        //deck.shuffle();
+        deck.shuffle();
         //deck.printDeckOfCards();
-        guest.setCard(new Card("Three","Hearts"));
-        guest.setCard(new Card("Nine","Diamonds"));
-        guest.setCard(new Card("Nine","Hearts"));
-        guest.setCard(new Card("Ace","Clubs"));
-        guest.setCard(new Card("Nine","Diamonds"));
+        guest.setCard(new Card(faces.Five,"Hearts"));
+        guest.setCard(new Card(faces.Five,"Hearts"));
+        guest.setCard(new Card(faces.Five,"Hearts"));
+        guest.setCard(new Card(faces.Four,"Hearts"));
+        guest.setCard(new Card(faces.Five,"Diamonds"));
 /*
         for(int i = 0; i < 5; i++){
             guest.setCard(deck.dealCard());
