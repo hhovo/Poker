@@ -27,10 +27,10 @@ public class poker {
             case 0:
                 collection.compareHighCards(guest, dealer);
                 break;
-            /*case 1:
+            case 1:
                 collection.compareOnePairs(guest, dealer);
                 break;
-            case 2:
+            /*case 2:
                 collection.compareTwoPairs(guest.getCardList(), dealer.getCardList());
                 break;
             case 3:

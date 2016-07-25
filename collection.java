@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class collection {
 
@@ -20,6 +22,7 @@ public class collection {
     }
 
     public collection_type coll_type = collection_type.HIGH_CARD;
+    public ArrayList<Card> compare_cards = new ArrayList<Card>();
 
     public collection determineCollectionType(Card[] cardList){
         if(is_one_pair(cardList, 0, cardList.length)) {
@@ -53,11 +56,12 @@ public class collection {
     }
 
 
-    /****************** Colection functions ********************************/
+    /************************** Collection functions ********************************/
 
     public boolean is_one_pair(Card[] cardList, int start, int end){
         for ( int i = start; i < end - 1; i++ ) {
             if( cardList[i].getFace() == cardList[i+1].getFace() ) {
+                this.compare_cards.add(cardList[i]);
                 for(int j = i + 1; j < end - 1; j++ ){
                     if(cardList[j].getFace() == cardList[j+1].getFace()) {
                         return false;
@@ -75,6 +79,7 @@ public class collection {
         }
         for(int i = 0; i < cardList.length - 1; i++){
             if( cardList[i].getFace() == cardList[i+1].getFace() ){
+                this.compare_cards.add(cardList[i]);
                 if (i+2 < cardList.length) {
                     if ( is_one_pair(cardList, i + 2, cardList.length) ) {
                         return true;
@@ -88,17 +93,21 @@ public class collection {
     public boolean is_three_of_kind(Card[] cardList, int start, int end){
         for(int i = start; i < end - 2; i++){
             if(cardList[i].getFace() == cardList[i+1].getFace() && cardList[i].getFace() == cardList[i+2].getFace()){
+                this.compare_cards.add(cardList[i]);
                 for(int j = i + 2; j < end - 1; j++){
                     if ( cardList[j].getFace() == cardList[j + 1].getFace() ){
+                        this.compare_cards.clear();
                         return false;
                     }
                 }
                 return true;
             }
             else if(cardList[i].getFace() == cardList[i+1].getFace()){
+                this.compare_cards.clear();
                 return false;
             }
         }
+        this.compare_cards.clear();
         return false;
     }
 
@@ -122,18 +131,21 @@ public class collection {
 
     public  boolean is_full_house(Card[] cardList){
         return (is_one_pair(cardList, 0, 2) && is_three_of_kind(cardList, 2, 5)) ||
-               (is_three_of_kind(cardList, 0, 3) && is_one_pair(cardList, 3, 5));
+               (is_one_pair(cardList, 3, 5) && is_three_of_kind(cardList, 0, 3));
     }
 
     public boolean is_four_of_kind(Card[] cardList) {
-        return (cardList[0].getFace() == cardList[1].getFace() &&
-                cardList[0].getFace() == cardList[2].getFace() &&
-                cardList[0].getFace() == cardList[3].getFace())
-                ||
-               (cardList[1].getFace() == cardList[2].getFace() &&
-                cardList[1].getFace() == cardList[3].getFace() &&
-                cardList[1].getFace() == cardList[4].getFace());
-
+        if ((cardList[0].getFace() == cardList[1].getFace() &&
+             cardList[0].getFace() == cardList[2].getFace() &&
+             cardList[0].getFace() == cardList[3].getFace())
+             ||
+            (cardList[1].getFace() == cardList[2].getFace() &&
+             cardList[1].getFace() == cardList[3].getFace() &&
+             cardList[1].getFace() == cardList[4].getFace()) ) {
+            this.compare_cards.add(cardList[2]);
+            return true;
+        }
+        return false;
     }
 
     public boolean is_straight_flush(Card[] cardList) {
@@ -147,7 +159,7 @@ public class collection {
 
     /************************************ compare functions *******************************************/
 
-    public static void compareHighCards(Player guest, Player dealer) {
+    public static void kicker(Player guest, Player dealer) {
         for (int i = guest.getCardList().length-1; i >= 0; i--) {
             if (guest.getCardList()[i].getFace() > dealer.getCardList()[i].getFace()){
                 guest.win_flag = true;
@@ -161,8 +173,26 @@ public class collection {
     }
 
 
-    public static void compareOnePairs(Player guest,Player dealer){
 
+    public static void compareHighCards(Player guest, Player dealer) {
+        collection.kicker(guest,dealer);
+    }
+
+
+    public static void compareOnePairs(Player guest, Player dealer){
+        System.out.println("tttttttttttttttttttttt");
+        System.out.println(guest.coll.compare_cards.size());
+        for (Card c : guest.coll.compare_cards){
+            System.out.println("------------------------");
+            System.out.println(c);
+            System.out.println("------------------------");
+        }
+
+        for (Card c : dealer.coll.compare_cards){
+            System.out.println("------------------------");
+            System.out.println(c);
+            System.out.println("------------------------");
+        }
     }
 
     public int compare(collection p1){
