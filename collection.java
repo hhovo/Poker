@@ -13,7 +13,6 @@ public class collection {
         STRAIGHT_FLUSH(8),
         ROYAL_FLUSH(9);
         int value;
-
         collection_type(int value){
             this.value = value;
         }
@@ -23,16 +22,13 @@ public class collection {
     public collection_type coll_type = collection_type.HIGH_CARD;
 
     public collection determineCollectionType(Card[] cardList){
-        for(Card i : cardList){
-            System.out.println(i);
-        }
         if(is_one_pair(cardList, 0, cardList.length)) {
             coll_type = collection_type.ONE_PAIR;
         }
         if(is_two_pair(cardList)) {
             coll_type = collection_type.TWO_PAIR;
         }
-        if(is_three_of_kind(cardList)){
+        if(is_three_of_kind(cardList, 0, 5)){
             coll_type = collection_type.THREE_OF_KIND;
         }
         if(is_straight(cardList)){
@@ -41,26 +37,23 @@ public class collection {
         if(is_flush(cardList)){
             coll_type = collection_type.FLUSH;
         }
-        /*if(is_full_house(cardList)){
+        if(is_full_house(cardList)){
             coll_type = collection_type.FULL_HOUSE;
-            return this;
         }
         if(is_four_of_kind(cardList)){
             coll_type = collection_type.FOUR_OF_KIND;
-            return this;
         }
         if(is_straight_flush(cardList)){
             coll_type = collection_type.STRAIGHT_FLUSH;
-            return this;
         }
-        if(is_reyal_flush(cardList)){
+        if(is_royal_flush(cardList)){
             coll_type = collection_type.ROYAL_FLUSH;
-            return this;
-        }*/
+        }
         return this;
     }
 
 
+    /****************** Colection functions ********************************/
 
     public boolean is_one_pair(Card[] cardList, int start, int end){
         for ( int i = start; i < end - 1; i++ ) {
@@ -77,10 +70,13 @@ public class collection {
     }
 
     public boolean is_two_pair(Card[] cardList){
+        if (is_four_of_kind(cardList)){
+            return false;
+        }
         for(int i = 0; i < cardList.length - 1; i++){
             if( cardList[i].getFace() == cardList[i+1].getFace() ){
                 if (i+2 < cardList.length) {
-                    if (is_one_pair(cardList, i + 2, cardList.length)) { // also should add && is_four_of_kind
+                    if ( is_one_pair(cardList, i + 2, cardList.length) ) {
                         return true;
                     }
                 }
@@ -89,10 +85,10 @@ public class collection {
         return false;
     }
 
-    public boolean is_three_of_kind(Card[] cardList){
-        for(int i = 0; i < cardList.length - 2; i++){
+    public boolean is_three_of_kind(Card[] cardList, int start, int end){
+        for(int i = start; i < end - 2; i++){
             if(cardList[i].getFace() == cardList[i+1].getFace() && cardList[i].getFace() == cardList[i+2].getFace()){
-                for(int j = i + 2; j < cardList.length - 1; j++){
+                for(int j = i + 2; j < end - 1; j++){
                     if ( cardList[j].getFace() == cardList[j + 1].getFace() ){
                         return false;
                     }
@@ -124,21 +120,63 @@ public class collection {
         return true;
     }
 
-    /*public  boolean is_full_house(Card[] cardList){
-    }*/
+    public  boolean is_full_house(Card[] cardList){
+        return (is_one_pair(cardList, 0, 2) && is_three_of_kind(cardList, 2, 5)) ||
+               (is_three_of_kind(cardList, 0, 3) && is_one_pair(cardList, 3, 5));
+    }
 
-//    public void compare(coll_names p1, coll_names p2){
-//        if ( p1.value > p2.value ){
-//            System.out.println(p1 +  " is greater then " + p2);
-//        }
-//        else if( p1.value < p2.value ) {
-//            System.out.println(p1 + " is less then " +  p2);
-//        }
-//        else {
-//            System.out.println(p1 + " is equal to " + p2);
-//        }
-//
-//    }
+    public boolean is_four_of_kind(Card[] cardList) {
+        return (cardList[0].getFace() == cardList[1].getFace() &&
+                cardList[0].getFace() == cardList[2].getFace() &&
+                cardList[0].getFace() == cardList[3].getFace())
+                ||
+               (cardList[1].getFace() == cardList[2].getFace() &&
+                cardList[1].getFace() == cardList[3].getFace() &&
+                cardList[1].getFace() == cardList[4].getFace());
+
+    }
+
+    public boolean is_straight_flush(Card[] cardList) {
+        return is_straight(cardList) && is_flush(cardList);
+    }
+
+    public boolean is_royal_flush(Card[] cardList) {
+        return is_straight(cardList) && is_flush(cardList) && cardList[0].getFace() == faces.Ten.value;
+    }
+
+
+    /************************************ compare functions *******************************************/
+
+    public static void compareHighCards(Player guest, Player dealer) {
+        for (int i = guest.getCardList().length-1; i >= 0; i--) {
+            if (guest.getCardList()[i].getFace() > dealer.getCardList()[i].getFace()){
+                guest.win_flag = true;
+                return;
+            }
+            if (guest.getCardList()[i].getFace() < dealer.getCardList()[i].getFace()) {
+                dealer.win_flag = true;
+                return;
+            }
+        }
+    }
+
+
+    public static void compareOnePairs(Player guest,Player dealer){
+
+    }
+
+    public int compare(collection p1){
+        if ( this.coll_type.value > p1.coll_type.value ){
+            return 1;
+        }
+        else if( this.coll_type.value < p1.coll_type.value ) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+
+    }
 
 }
 
