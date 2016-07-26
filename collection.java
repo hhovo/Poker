@@ -22,34 +22,34 @@ public class collection {
     }
 
     public collection_type coll_type = collection_type.HIGH_CARD;
-    public ArrayList<Card> compare_cards = new ArrayList<Card>();
+    public ArrayList<Card> coll_cards = new ArrayList<Card>();
 
     public collection determineCollectionType(Card[] cardList){
         if(is_one_pair(cardList, 0, cardList.length)) {
             coll_type = collection_type.ONE_PAIR;
         }
-        if(is_two_pair(cardList)) {
+        else if(is_two_pair(cardList)) {
             coll_type = collection_type.TWO_PAIR;
         }
-        if(is_three_of_kind(cardList, 0, 5)){
+        else if(is_three_of_kind(cardList, 0, 5)){
             coll_type = collection_type.THREE_OF_KIND;
         }
-        if(is_straight(cardList)){
+        else if(is_straight(cardList)){
             coll_type = collection_type.STRAIGHT;
         }
-        if(is_flush(cardList)){
+        else if(is_flush(cardList)){
             coll_type = collection_type.FLUSH;
         }
-        if(is_full_house(cardList)){
+        else if(is_full_house(cardList)){
             coll_type = collection_type.FULL_HOUSE;
         }
-        if(is_four_of_kind(cardList)){
+        else if(is_four_of_kind(cardList)){
             coll_type = collection_type.FOUR_OF_KIND;
         }
-        if(is_straight_flush(cardList)){
+        else if(is_straight_flush(cardList)){
             coll_type = collection_type.STRAIGHT_FLUSH;
         }
-        if(is_royal_flush(cardList)){
+        else if(is_royal_flush(cardList)){
             coll_type = collection_type.ROYAL_FLUSH;
         }
         return this;
@@ -61,15 +61,17 @@ public class collection {
     public boolean is_one_pair(Card[] cardList, int start, int end){
         for ( int i = start; i < end - 1; i++ ) {
             if( cardList[i].getFace() == cardList[i+1].getFace() ) {
-                this.compare_cards.add(cardList[i]);
+                this.coll_cards.add(cardList[i]);
                 for(int j = i + 1; j < end - 1; j++ ){
                     if(cardList[j].getFace() == cardList[j+1].getFace()) {
+                        this.coll_cards.clear();
                         return false;
                     }
                 }
                 return true;
             }
         }
+        this.coll_cards.clear();
         return false;
     }
 
@@ -79,7 +81,7 @@ public class collection {
         }
         for(int i = 0; i < cardList.length - 1; i++){
             if( cardList[i].getFace() == cardList[i+1].getFace() ){
-                this.compare_cards.add(cardList[i]);
+                this.coll_cards.add(cardList[i]);
                 if (i+2 < cardList.length) {
                     if ( is_one_pair(cardList, i + 2, cardList.length) ) {
                         return true;
@@ -87,27 +89,28 @@ public class collection {
                 }
             }
         }
+        this.coll_cards.clear();
         return false;
     }
 
     public boolean is_three_of_kind(Card[] cardList, int start, int end){
         for(int i = start; i < end - 2; i++){
             if(cardList[i].getFace() == cardList[i+1].getFace() && cardList[i].getFace() == cardList[i+2].getFace()){
-                this.compare_cards.add(cardList[i]);
+                this.coll_cards.add(cardList[i]);
                 for(int j = i + 2; j < end - 1; j++){
                     if ( cardList[j].getFace() == cardList[j + 1].getFace() ){
-                        this.compare_cards.clear();
+                        this.coll_cards.clear();
                         return false;
                     }
                 }
                 return true;
             }
             else if(cardList[i].getFace() == cardList[i+1].getFace()){
-                this.compare_cards.clear();
+                this.coll_cards.clear();
                 return false;
             }
         }
-        this.compare_cards.clear();
+        this.coll_cards.clear();
         return false;
     }
 
@@ -142,7 +145,7 @@ public class collection {
             (cardList[1].getFace() == cardList[2].getFace() &&
              cardList[1].getFace() == cardList[3].getFace() &&
              cardList[1].getFace() == cardList[4].getFace()) ) {
-            this.compare_cards.add(cardList[2]);
+            this.coll_cards.add(cardList[2]);
             return true;
         }
         return false;
@@ -174,24 +177,66 @@ public class collection {
 
 
 
-    public static void compareHighCards(Player guest, Player dealer) {
+    /*public static void compareHighCards(Player guest, Player dealer) {
         collection.kicker(guest,dealer);
     }
 
-
     public static void compareOnePairs(Player guest, Player dealer){
-        System.out.println("tttttttttttttttttttttt");
-        System.out.println(guest.coll.compare_cards.size());
-        for (Card c : guest.coll.compare_cards){
-            System.out.println("------------------------");
-            System.out.println(c);
-            System.out.println("------------------------");
+        collection.compare_coll_cards(guest,dealer);
+        if (!(guest.win_flag || dealer.win_flag)){
+            collection.kicker(guest,dealer);
         }
+    }
 
-        for (Card c : dealer.coll.compare_cards){
-            System.out.println("------------------------");
-            System.out.println(c);
-            System.out.println("------------------------");
+    public static void compareTwoPairs(Player guest, Player dealer) {
+        collection.compare_coll_cards(guest,dealer);
+        if (!(guest.win_flag || dealer.win_flag)){
+            collection.kicker(guest,dealer);
+        }
+    }
+
+    public static void compareThreeOfKinds(Player guest, Player dealer){
+        collection.compare_coll_cards(guest,dealer);
+    }
+
+    public static void compareStraights(Player guest, Player dealer){
+        collection.kicker(guest,dealer);
+    }
+
+    public static void compareFlushes(Player guest, Player dealer){
+        collection.kicker(guest,dealer);
+    }
+
+    public static void compareFullHuses(Player guest, Player dealer){
+        collection.compare_coll_cards(guest,dealer);
+    }
+
+    public static void compareFourOfKinds(Player guest, Player dealer){
+        collection.compare_coll_cards(guest,dealer);
+    }
+
+    public static void compareStraightFlush(Player guest, Player dealer){
+        collection.kicker(guest,dealer);
+    }
+    */
+
+    public static void compare_coll_cards(Player guest, Player dealer){
+        for (int i = guest.coll.coll_cards.size()-1; i >= 0; i--){
+            if(guest.coll.coll_cards.get(i).getFace() > dealer.coll.coll_cards.get(i).getFace()){
+                guest.win_flag = true;
+                return;
+            }
+            if( guest.coll.coll_cards.get(i).getFace() < dealer.coll.coll_cards.get(i).getFace()){
+                dealer.win_flag = true;
+                return;
+            }
+        }
+    }
+
+    public static void compare_coll_cards_and_kiker(Player guest, Player dealer){
+        collection.compare_coll_cards(guest,dealer);
+        if (!(guest.win_flag || dealer.win_flag)) {
+            collection.kicker(guest, dealer);
         }
     }
 
@@ -205,8 +250,6 @@ public class collection {
         else {
             return 0;
         }
-
     }
-
 }
 

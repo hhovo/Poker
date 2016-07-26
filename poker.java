@@ -24,20 +24,27 @@ public class poker {
     public void determineWinner(Player guest, Player dealer) {
         this.PrintPlayersCards();
         switch (guest.coll.coll_type.value) {
-            case 0:
+            case 0: case 4: case 5: case 8:
+                collection.kicker(guest,dealer);
+            case 1: case 2:
+                collection.compare_coll_cards_and_kiker(guest,dealer);
+            case 3: case 6: case 7:
+                collection.compare_coll_cards(guest,dealer);
+
+            /*case 0:
                 collection.compareHighCards(guest, dealer);
                 break;
             case 1:
                 collection.compareOnePairs(guest, dealer);
                 break;
-            /*case 2:
-                collection.compareTwoPairs(guest.getCardList(), dealer.getCardList());
+            case 2:
+                collection.compareTwoPairs(guest, dealer);
                 break;
             case 3:
-                collection.compareThreeOfKinds(guest.getCardList(), dealer.getCardList());
+                collection.compareThreeOfKinds(guest, dealer);
                 break;
             case 4:
-                collection.compareStraights(guest.getCardList(), dealer.getCardList());
+                collection.compareStraights(guest, dealer);
                 break;
             case 5:
                 collection.compareFlushes(guest.getCardList(), dealer.getCardList());
@@ -50,9 +57,6 @@ public class poker {
                 break;
             case 8:
                 collection.compareStraightFlush(guest.getCardList(), dealer.getCardList());
-                break;
-            case 9:
-                collection.compareRoyalFlush(guest.getCardList(), dealer.getCardList());
                 break;*/
             default:
                 break;
@@ -71,15 +75,21 @@ public class poker {
         System.out.println("Dealing cards");
         System.out.println("_________________");
         deck.shuffle();
-        /*guest.setCard(new Card(faces.Ten,"Hearts"));
-        guest.setCard(new Card(faces.Jack,"Hearts"));
-        guest.setCard(new Card(faces.Queen,"Hearts"));
+        guest.setCard(new Card(faces.Nine,"Hearts"));
+        guest.setCard(new Card(faces.Nine,"Diamond"));
+        guest.setCard(new Card(faces.King,"Clubs"));
         guest.setCard(new Card(faces.King,"Hearts"));
-        guest.setCard(new Card(faces.Ace,"Hearts"));*/
-        for(int i = 0; i < 5; i++){
+        guest.setCard(new Card(faces.Ace,"Hearts"));
+
+        dealer.setCard(new Card(faces.Ten,"Hearts"));
+        dealer.setCard(new Card(faces.Ten,"Diamond"));
+        dealer.setCard(new Card(faces.King,"Clubs"));
+        dealer.setCard(new Card(faces.King,"Hearts"));
+        dealer.setCard(new Card(faces.Ace,"Hearts"));
+        /*for(int i = 0; i < 5; i++){
             guest.setCard(deck.dealCard());
             dealer.setCard(deck.dealCard());
-        }
+        }*/
         Arrays.sort(guest.getCardList(), (Card c1, Card c2) -> c1.getFace().compareTo(c2.getFace()));
         Arrays.sort(dealer.getCardList(), (Card c1, Card c2) -> c1.getFace().compareTo(c2.getFace()));
         guest.coll.determineCollectionType(guest.getCardList());
@@ -93,8 +103,9 @@ public class poker {
             System.out.println(dealer + " WON");
         }
         else {
-            System.out.println(dealer + " and " + guest + " have same cards ");
             this.determineWinner(guest,dealer);
+            //end_game()
+
         }
     }
 }
