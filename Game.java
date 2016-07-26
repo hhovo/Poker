@@ -1,9 +1,9 @@
+import java.util.Scanner;
 
 public class Game {
     poker play;
 
     public Game(String guest_name){
-        System.out.println("Hello " + guest_name + "\n" + "!!!Good Luck!!!");
         play = new poker(guest_name);
     }
 
@@ -12,7 +12,10 @@ public class Game {
     }
 
     public static void main(String[] args){
-        Game ob  = new Game("hhovo");
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter your name");
+        String name = input.next();
+        Game ob  = new Game(name);
         ob.startGame();
     }
 }

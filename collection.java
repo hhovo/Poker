@@ -175,51 +175,6 @@ public class collection {
         }
     }
 
-
-
-    /*public static void compareHighCards(Player guest, Player dealer) {
-        collection.kicker(guest,dealer);
-    }
-
-    public static void compareOnePairs(Player guest, Player dealer){
-        collection.compare_coll_cards(guest,dealer);
-        if (!(guest.win_flag || dealer.win_flag)){
-            collection.kicker(guest,dealer);
-        }
-    }
-
-    public static void compareTwoPairs(Player guest, Player dealer) {
-        collection.compare_coll_cards(guest,dealer);
-        if (!(guest.win_flag || dealer.win_flag)){
-            collection.kicker(guest,dealer);
-        }
-    }
-
-    public static void compareThreeOfKinds(Player guest, Player dealer){
-        collection.compare_coll_cards(guest,dealer);
-    }
-
-    public static void compareStraights(Player guest, Player dealer){
-        collection.kicker(guest,dealer);
-    }
-
-    public static void compareFlushes(Player guest, Player dealer){
-        collection.kicker(guest,dealer);
-    }
-
-    public static void compareFullHuses(Player guest, Player dealer){
-        collection.compare_coll_cards(guest,dealer);
-    }
-
-    public static void compareFourOfKinds(Player guest, Player dealer){
-        collection.compare_coll_cards(guest,dealer);
-    }
-
-    public static void compareStraightFlush(Player guest, Player dealer){
-        collection.kicker(guest,dealer);
-    }
-    */
-
     public static void compare_coll_cards(Player guest, Player dealer){
         for (int i = guest.coll.coll_cards.size()-1; i >= 0; i--){
             if(guest.coll.coll_cards.get(i).getFace() > dealer.coll.coll_cards.get(i).getFace()){
